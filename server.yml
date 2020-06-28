@@ -1,0 +1,37 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-service
+spec:
+  selector:
+    app: sample
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      nodePort: 30000
+  type: NodePort
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: sample-dep
+  name: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+        - image: cdchathura/simple-server:0.0.1-SNAPSHOT
+          name: simple-server
+          ports:
+           - containerPort: 8080
